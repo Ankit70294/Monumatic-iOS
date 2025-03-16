@@ -249,6 +249,11 @@
 //        }
 //        collectionView.reloadData()
 //    }
+//    
+//    // Add this method to dismiss the keyboard when the search button is clicked
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        searchBar.resignFirstResponder() // Dismiss the keyboard
+//    }
 //}
 //
 //// MARK: - MonumentCell
@@ -373,7 +378,6 @@
 //#Preview{
 //    LandingViewController()
 //}
-//
 
 import UIKit
 import FirebaseFirestore
@@ -415,6 +419,11 @@ class LandingViewController: UIViewController, UICollectionViewDataSource, UICol
         setupLocationManager()
         fetchMonumentsFromFirestore()
         loadProfilePicture() // Load the profile picture
+
+        // Add tap gesture to dismiss the keyboard
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false // Ensure it doesn't interfere with other touches
+        view.addGestureRecognizer(tapGesture)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -583,6 +592,11 @@ class LandingViewController: UIViewController, UICollectionViewDataSource, UICol
     @objc private func profileImageTapped() {
         let profileVC = ProfileViewController()
         navigationController?.pushViewController(profileVC, animated: true)
+    }
+    
+    // MARK: - Dismiss Keyboard
+    @objc private func dismissKeyboard() {
+        view.endEditing(true) // Dismiss the keyboard
     }
     
     // MARK: - UICollectionViewDataSource
