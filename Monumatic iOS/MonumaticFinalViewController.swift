@@ -50,6 +50,16 @@
 //        setupUI()
 //        fetchMonumentData()
 //        setupImagePicker()
+//
+//        // Add tap gesture to dismiss the keyboard
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+//        tapGesture.cancelsTouchesInView = false // Ensure it doesn't interfere with other touches
+//        view.addGestureRecognizer(tapGesture)
+//    }
+//
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+////        loadProfilePicture() // Reload the profile picture when the view appears
 //    }
 //
 //    // MARK: - Setup UI
@@ -181,6 +191,11 @@
 //            reviewsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
 //            reviewsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
 //        ])
+//    }
+//
+//    // MARK: - Dismiss Keyboard
+//    @objc private func dismissKeyboard() {
+//        view.endEditing(true) // Dismiss the keyboard
 //    }
 //
 //    // MARK: - Update UI
@@ -423,6 +438,11 @@
 //        super.viewDidLoad()
 //        setupUI()
 //        setupImagePicker()
+//
+//        // Add tap gesture to dismiss the keyboard
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+//        tapGesture.cancelsTouchesInView = false // Ensure it doesn't interfere with other touches
+//        view.addGestureRecognizer(tapGesture)
 //    }
 //
 //    private func setupUI() {
@@ -589,6 +609,11 @@
 //    @objc private func cancelReview() {
 //        self.dismiss(animated: true, completion: nil)
 //    }
+//
+//    // MARK: - Dismiss Keyboard
+//    @objc private func dismissKeyboard() {
+//        view.endEditing(true) // Dismiss the keyboard
+//    }
 //}
 //
 //// MARK: - ReviewView
@@ -743,6 +768,7 @@
 //    MonumaticFinalViewController()
 //}
 
+// MonumaticFinalViewController.swift
 import UIKit
 import FirebaseFirestore
 import FirebaseStorage
@@ -796,15 +822,14 @@ class MonumaticFinalViewController: UIViewController, UIImagePickerControllerDel
         fetchMonumentData()
         setupImagePicker()
 
-        // Add tap gesture to dismiss the keyboard
+        // Add tap gesture to dismiss keyboard
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tapGesture.cancelsTouchesInView = false // Ensure it doesn't interfere with other touches
+        tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        loadProfilePicture() // Reload the profile picture when the view appears
     }
 
     // MARK: - Setup UI
@@ -940,7 +965,7 @@ class MonumaticFinalViewController: UIViewController, UIImagePickerControllerDel
 
     // MARK: - Dismiss Keyboard
     @objc private func dismissKeyboard() {
-        view.endEditing(true) // Dismiss the keyboard
+        view.endEditing(true)
     }
 
     // MARK: - Update UI
@@ -1174,7 +1199,6 @@ class AddReviewViewController: UIViewController, UIImagePickerControllerDelegate
     private var selectedImage: UIImage?
     private var selectedVideoURL: URL?
 
-    // Container to display selected media
     private let mediaContainerView = UIView()
     private let mediaImageView = UIImageView()
     private let removeMediaButton = UIButton()
@@ -1184,16 +1208,15 @@ class AddReviewViewController: UIViewController, UIImagePickerControllerDelegate
         setupUI()
         setupImagePicker()
 
-        // Add tap gesture to dismiss the keyboard
+        // Add tap gesture to dismiss keyboard
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tapGesture.cancelsTouchesInView = false // Ensure it doesn't interfere with other touches
+        tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
 
     private func setupUI() {
         view.backgroundColor = .white
 
-        // Review Text View
         reviewTextView.layer.borderColor = UIColor.lightGray.cgColor
         reviewTextView.layer.borderWidth = 1.0
         reviewTextView.layer.cornerRadius = 8.0
@@ -1201,7 +1224,6 @@ class AddReviewViewController: UIViewController, UIImagePickerControllerDelegate
         reviewTextView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(reviewTextView)
 
-        // Add Image Button
         addImageButton.setTitle("Add Image", for: .normal)
         addImageButton.backgroundColor = .systemBlue
         addImageButton.layer.cornerRadius = 8
@@ -1209,7 +1231,6 @@ class AddReviewViewController: UIViewController, UIImagePickerControllerDelegate
         view.addSubview(addImageButton)
         addImageButton.addTarget(self, action: #selector(openImagePicker), for: .touchUpInside)
 
-        // Add Video Button
         addVideoButton.setTitle("Add Video", for: .normal)
         addVideoButton.backgroundColor = .systemPurple
         addVideoButton.layer.cornerRadius = 8
@@ -1217,7 +1238,6 @@ class AddReviewViewController: UIViewController, UIImagePickerControllerDelegate
         view.addSubview(addVideoButton)
         addVideoButton.addTarget(self, action: #selector(openVideoPicker), for: .touchUpInside)
 
-        // Submit Button
         submitButton.setTitle("Submit", for: .normal)
         submitButton.backgroundColor = .systemGreen
         submitButton.layer.cornerRadius = 8
@@ -1225,7 +1245,6 @@ class AddReviewViewController: UIViewController, UIImagePickerControllerDelegate
         view.addSubview(submitButton)
         submitButton.addTarget(self, action: #selector(submitReview), for: .touchUpInside)
 
-        // Cancel Button
         cancelButton.setTitle("Cancel", for: .normal)
         cancelButton.backgroundColor = .systemRed
         cancelButton.layer.cornerRadius = 8
@@ -1233,26 +1252,22 @@ class AddReviewViewController: UIViewController, UIImagePickerControllerDelegate
         view.addSubview(cancelButton)
         cancelButton.addTarget(self, action: #selector(cancelReview), for: .touchUpInside)
 
-        // Media Container View
-        mediaContainerView.isHidden = true // Initially hidden
+        mediaContainerView.isHidden = true
         mediaContainerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mediaContainerView)
 
-        // Media Image View
         mediaImageView.contentMode = .scaleAspectFit
         mediaImageView.layer.cornerRadius = 8
         mediaImageView.clipsToBounds = true
         mediaImageView.translatesAutoresizingMaskIntoConstraints = false
         mediaContainerView.addSubview(mediaImageView)
 
-        // Remove Media Button
         removeMediaButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
         removeMediaButton.tintColor = .red
         removeMediaButton.translatesAutoresizingMaskIntoConstraints = false
         removeMediaButton.addTarget(self, action: #selector(removeMedia), for: .touchUpInside)
         mediaContainerView.addSubview(removeMediaButton)
 
-        // Constraints
         NSLayoutConstraint.activate([
             reviewTextView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             reviewTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -1321,7 +1336,7 @@ class AddReviewViewController: UIViewController, UIImagePickerControllerDelegate
         } else if let videoURL = info[.mediaURL] as? URL {
             selectedVideoURL = videoURL
             selectedImage = nil
-            mediaImageView.image = UIImage(systemName: "play.circle.fill") // Placeholder for video
+            mediaImageView.image = UIImage(systemName: "play.circle.fill")
             mediaContainerView.isHidden = false
         }
         
@@ -1355,9 +1370,8 @@ class AddReviewViewController: UIViewController, UIImagePickerControllerDelegate
         self.dismiss(animated: true, completion: nil)
     }
 
-    // MARK: - Dismiss Keyboard
     @objc private func dismissKeyboard() {
-        view.endEditing(true) // Dismiss the keyboard
+        view.endEditing(true)
     }
 }
 
